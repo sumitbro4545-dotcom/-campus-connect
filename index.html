@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Connect — One Platform for Complete Campus Management</title>
+  <meta name="description" content="Campus Connect is the all-in-one campus management platform for modern institutions. Smart notifications, announcements, events, and student community — all in one place." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy-950: #020b18;
+      --navy-900: #050f1f;
+      --navy-800: #071428;
+      --navy-700: #0a1d3a;
+      --navy-600: #0d2550;
+      --cyan-400: #22d3ee;
+      --cyan-300: #67e8f9;
+      --cyan-200: #a5f3fc;
+      --cyan-glow: rgba(34, 211, 238, 0.35);
+      --cyan-soft: rgba(34, 211, 238, 0.12);
+      --white: #ffffff;
+      --white-80: rgba(255,255,255,0.8);
+      --white-60: rgba(255,255,255,0.6);
+      --white-20: rgba(255,255,255,0.2);
+      --white-10: rgba(255,255,255,0.1);
+      --white-06: rgba(255,255,255,0.06);
+      --glass-bg: rgba(255,255,255,0.05);
+      --glass-border: rgba(255,255,255,0.1);
+      --glass-hover: rgba(255,255,255,0.09);
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--navy-950);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── AMBIENT BACKGROUND ─── */
+    .bg-ambient {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 10%, rgba(34,211,238,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 80%, rgba(6,182,212,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(14,165,233,0.04) 0%, transparent 70%);
+    }
+    .grid-overlay {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.025;
+      background-image: linear-gradient(rgba(34,211,238,0.5) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(34,211,238,0.5) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ─── LAYOUT ─── */
+    .container { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 0 24px;
+      background: rgba(2, 11, 24, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--glass-border);
+      height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.3s;
+    }
+    .navbar-inner { max-width: 1140px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+
+    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-weight: 800; font-size: 18px; color: #fff;
+      box-shadow: 0 0 18px rgba(34,211,238,0.45);
+      flex-shrink: 0;
+    }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo-name { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--white); letter-spacing: -0.3px; }
+    .logo-tagline { font-size: 10px; color: var(--cyan-400); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+
+    .nav-download {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+      color: #fff; font-weight: 700; font-size: 14px; letter-spacing: 0.3px;
+      padding: 11px 26px; border-radius: 50px; border: none; cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 24px rgba(34,211,238,0.5), 0 4px 16px rgba(14,165,233,0.3);
+      transition: all 0.3s;
+      animation: glow-pulse 3s ease-in-out infinite;
+      position: relative; overflow: hidden;
+    }
+    .nav-download::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+      border-radius: inherit; pointer-events: none;
+    }
+    .nav-download:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 40px rgba(34,211,238,0.7), 0 8px 28px rgba(14,165,233,0.4);
+    }
+    .nav-download svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 24px rgba(34,211,238,0.5), 0 4px 16px rgba(14,165,233,0.3); }
+      50%       { box-shadow: 0 0 40px rgba(34,211,238,0.75), 0 6px 24px rgba(14,165,233,0.5); }
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 120px 24px 80px; text-align: center; position: relative;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--glass-bg); border: 1px solid rgba(34,211,238,0.25);
+      border-radius: 50px; padding: 7px 20px;
+      font-size: 12px; font-weight: 600; color: var(--cyan-300); letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 28px;
+      animation: fadeInDown 0.7s ease both;
+    }
+    .hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan-400); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero-headline {
+      font-family: var(--font-display); font-weight: 800; font-size: clamp(38px, 7vw, 76px);
+      line-height: 1.05; letter-spacing: -2px; color: var(--white);
+      margin-bottom: 24px; max-width: 900px;
+      animation: fadeInDown 0.7s 0.1s ease both;
+    }
+    .hero-headline .accent { color: var(--cyan-400); position: relative; }
+    .hero-headline .accent::after {
+      content: ''; position: absolute; left: 0; bottom: -4px; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--cyan-400), transparent);
+      border-radius: 4px;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2.2vw, 20px); color: var(--white-60); max-width: 600px;
+      margin: 0 auto 40px; font-weight: 400; line-height: 1.65;
+      animation: fadeInDown 0.7s 0.2s ease both;
+    }
+
+    .hero-cta-row {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center;
+      animation: fadeInDown 0.7s 0.3s ease both;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+      color: #fff; font-weight: 700; font-size: 16px; padding: 15px 36px;
+      border-radius: 50px; border: none; cursor: pointer; text-decoration: none;
+      box-shadow: 0 0 30px rgba(34,211,238,0.55), 0 6px 20px rgba(14,165,233,0.35);
+      transition: all 0.3s; position: relative; overflow: hidden;
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .btn-primary:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 0 50px rgba(34,211,238,0.8), 0 10px 30px rgba(14,165,233,0.5); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      color: var(--white-80); font-weight: 600; font-size: 16px; padding: 14px 32px;
+      border-radius: 50px; cursor: pointer; text-decoration: none;
+      transition: all 0.3s; backdrop-filter: blur(12px);
+    }
+    .btn-ghost:hover { background: var(--glass-hover); border-color: var(--cyan-400); color: var(--cyan-300); transform: translateY(-2px); }
+
+    .hero-stats {
+      display: flex; align-items: center; gap: 40px; margin-top: 64px; justify-content: center; flex-wrap: wrap;
+      animation: fadeInDown 0.7s 0.45s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: var(--font-display); font-size: 36px; font-weight: 800; color: var(--cyan-400); line-height: 1; letter-spacing: -1px; }
+    .stat-label { font-size: 13px; color: var(--white-60); margin-top: 4px; font-weight: 500; }
+    .stat-divider { width: 1px; height: 50px; background: var(--white-10); }
+
+    /* ─── PHONE MOCKUP ─── */
+    .mockup-section { padding: 80px 24px; position: relative; }
+    .mockup-section::before {
+      content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mockup-inner { display: flex; align-items: center; justify-content: center; gap: 60px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
+
+    .mockup-copy { flex: 1; min-width: 280px; max-width: 450px; }
+    .section-eyebrow { font-size: 11px; font-weight: 700; color: var(--cyan-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+    .section-headline { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 4vw, 44px); line-height: 1.1; letter-spacing: -1px; color: var(--white); margin-bottom: 20px; }
+    .section-body { font-size: 16px; color: var(--white-60); line-height: 1.7; margin-bottom: 32px; }
+
+    .feature-list { display: flex; flex-direction: column; gap: 16px; }
+    .feature-item { display: flex; align-items: center; gap: 14px; }
+    .feature-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan-400); box-shadow: 0 0 10px var(--cyan-glow); flex-shrink: 0; }
+    .feature-text { font-size: 15px; color: var(--white-80); font-weight: 500; }
+
+    .phone-wrap { flex-shrink: 0; position: relative; }
+    .phone-frame {
+      width: 260px; height: 520px; border-radius: 40px;
+      background: linear-gradient(145deg, #0d2250 0%, #071428 100%);
+      border: 2px solid rgba(34,211,238,0.25);
+      box-shadow: 0 0 60px rgba(34,211,238,0.2), 0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+      position: relative; overflow: hidden; padding: 20px 16px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .phone-frame::before {
+      content: ''; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+      width: 80px; height: 6px; background: rgba(255,255,255,0.12); border-radius: 4px;
+    }
+    .phone-notch { height: 22px; }
+    .phone-status { display: flex; justify-content: space-between; align-items: center; padding: 0 4px; }
+    .phone-time { font-size: 12px; font-weight: 600; color: var(--white-80); }
+    .phone-icons { display: flex; gap: 6px; align-items: center; }
+    .phone-icon-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--white-60); }
+
+    .phone-card {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 14px; backdrop-filter: blur(10px);
+    }
+    .phone-greeting { font-size: 13px; color: var(--white-60); font-weight: 400; margin-bottom: 2px; }
+    .phone-greeting-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--white); }
+    .phone-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,211,238,0.15); border: 1px solid rgba(34,211,238,0.3); border-radius: 50px; padding: 4px 10px; font-size: 10px; font-weight: 600; color: var(--cyan-300); margin-top: 8px; }
+
+    .phone-notif { background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2); border-radius: 12px; padding: 10px 12px; }
+    .phone-notif-title { font-size: 10px; font-weight: 700; color: var(--cyan-300); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+    .phone-notif-text { font-size: 11px; color: var(--white-80); line-height: 1.4; }
+
+    .phone-event { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px 12px; }
+    .phone-event-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--cyan-400); margin-bottom: 4px; }
+    .phone-event-name { font-size: 12px; font-weight: 600; color: var(--white); }
+    .phone-event-time { font-size: 10px; color: var(--white-60); margin-top: 2px; }
+
+    .phone-glow {
+      position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 80px;
+      background: radial-gradient(ellipse, rgba(34,211,238,0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ─── WHY SECTION ─── */
+    .why-section { padding: 100px 24px; position: relative; }
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-header .section-headline { margin-bottom: 16px; }
+    .section-header .section-body { max-width: 560px; margin: 0 auto; }
+
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+
+    .why-card {
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 20px; padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 16px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative; overflow: hidden; cursor: default;
+    }
+    .why-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(34,211,238,0.05) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.35s; pointer-events: none; border-radius: inherit;
+    }
+    .why-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(34,211,238,0.5), transparent);
+      opacity: 0; transition: opacity 0.35s;
+    }
+    .why-card:hover { transform: translateY(-6px); border-color: rgba(34,211,238,0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px rgba(34,211,238,0.1); }
+    .why-card:hover::before { opacity: 1; }
+    .why-card:hover::after { opacity: 1; }
+
+    .card-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; transition: all 0.35s;
+    }
+    .why-card:hover .card-icon { background: rgba(34,211,238,0.2); box-shadow: 0 0 20px rgba(34,211,238,0.25); }
+
+    .card-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--white); }
+    .card-desc { font-size: 14px; color: var(--white-60); line-height: 1.6; }
+    .card-check { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--cyan-400); margin-top: auto; }
+    .card-check::before { content: '✓'; font-size: 14px; }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-section { padding: 100px 24px; position: relative; }
+    .steps-row { display: flex; align-items: flex-start; gap: 0; max-width: 900px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+    .step { flex: 1; min-width: 180px; text-align: center; padding: 0 16px; position: relative; }
+    .step:not(:last-child)::after {
+      content: ''; position: absolute; top: 28px; right: -10%; width: 20%; height: 1px;
+      background: linear-gradient(90deg, rgba(34,211,238,0.4), transparent);
+    }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(14,165,233,0.2), rgba(34,211,238,0.1));
+      border: 1px solid rgba(34,211,238,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--cyan-400);
+      margin: 0 auto 20px;
+      box-shadow: 0 0 20px rgba(34,211,238,0.15);
+    }
+    .step-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .step-desc { font-size: 14px; color: var(--white-60); line-height: 1.55; }
+
+    /* ─── CONTACT ─── */
+    .contact-section { padding: 100px 24px; }
+    .contact-card {
+      max-width: 640px; margin: 0 auto;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 28px; padding: 52px 44px;
+      backdrop-filter: blur(24px); text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(34,211,238,0.05);
+      position: relative; overflow: hidden;
+    }
+    .contact-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(34,211,238,0.5), transparent);
+    }
+    .contact-icon { font-size: 40px; margin-bottom: 20px; }
+    .contact-headline { font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--white); margin-bottom: 12px; letter-spacing: -0.8px; }
+    .contact-sub { font-size: 16px; color: var(--white-60); margin-bottom: 36px; line-height: 1.6; }
+    .contact-email-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: var(--glass-bg); border: 1px solid rgba(34,211,238,0.3);
+      border-radius: 16px; padding: 16px 28px; color: var(--cyan-300);
+      font-size: 16px; font-weight: 600; text-decoration: none;
+      transition: all 0.3s; margin-bottom: 20px; width: 100%; justify-content: center;
+      backdrop-filter: blur(12px);
+    }
+    .contact-email-btn:hover { background: rgba(34,211,238,0.1); border-color: var(--cyan-400); transform: translateY(-2px); box-shadow: 0 0 20px rgba(34,211,238,0.2); }
+    .contact-website { font-size: 14px; color: var(--white-60); }
+    .contact-website a { color: var(--cyan-400); text-decoration: none; font-weight: 600; }
+    .contact-website a:hover { color: var(--cyan-300); }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      border-top: 1px solid var(--glass-border);
+      padding: 52px 24px 36px;
+      background: linear-gradient(0deg, rgba(5,15,31,0.8) 0%, transparent 100%);
+    }
+    .footer-inner { max-width: 1140px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 28px; text-align: center; }
+    .footer-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .footer-brand { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--white); }
+    .footer-tagline { font-size: 13px; color: var(--white-60); }
+    .footer-initiative { font-size: 12px; color: var(--cyan-400); font-weight: 600; letter-spacing: 0.5px; }
+
+    .footer-insta {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(225,48,108,0.12); border: 1px solid rgba(225,48,108,0.25);
+      color: #e1306c; text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 0 16px rgba(225,48,108,0.2);
+    }
+    .footer-insta:hover { background: rgba(225,48,108,0.2); box-shadow: 0 0 30px rgba(225,48,108,0.4); transform: translateY(-2px) scale(1.08); }
+    .footer-insta svg { width: 22px; height: 22px; }
+
+    .footer-copy { font-size: 13px; color: var(--white-60); }
+
+    /* ─── DIVIDER ─── */
+    .section-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--glass-border), transparent); margin: 0 auto; max-width: 800px; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp   { from { opacity: 0; transform: translateY(30px);  } to { opacity: 1; transform: translateY(0); } }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    .phone-wrap { animation: float 5s ease-in-out infinite; }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .mockup-inner { flex-direction: column; align-items: center; }
+      .mockup-copy { text-align: center; }
+      .steps-row .step:not(:last-child)::after { display: none; }
+      .contact-card { padding: 36px 24px; }
+      .hero-stats .stat-divider { display: none; }
+      .hero-stats { gap: 24px; }
+      .nav-download span.download-label { display: none; }
+    }
+    @media (max-width: 480px) {
+      .hero-headline { letter-spacing: -1.5px; }
+      .cards-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 360px) {
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-ambient"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="logo-wrap">
+        <div class="logo-icon">CC</div>
+        <div class="logo-text">
+          <span class="logo-name">Campus Connect</span>
+          <span class="logo-tagline">Campus Management</span>
+        </div>
+      </a>
+      <a href="#download" class="nav-download">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span class="download-label">Download App</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero" id="home">
+    <div class="container" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        An LeadCircle Initiative
+      </div>
+      <h1 class="hero-headline">
+        One Platform for<br><span class="accent">Complete Campus</span><br>Management
+      </h1>
+      <p class="hero-sub">Connecting students, faculty, and administration — through smart notifications, campus announcements, events, and a thriving community.</p>
+      <div class="hero-cta-row">
+        <a href="#download" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Now — It's Free
+        </a>
+        <a href="#why" class="btn-ghost">
+          Learn More
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">10K+</div>
+          <div class="stat-label">Students</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Campuses</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">99%</div>
+          <div class="stat-label">Uptime</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PHONE MOCKUP ─── -->
+  <section class="mockup-section" id="features">
+    <div class="mockup-inner reveal">
+      <div class="mockup-copy">
+        <div class="section-eyebrow">Designed for students</div>
+        <h2 class="section-headline">Your campus,<br>in your pocket</h2>
+        <p class="section-body">From morning announcements to late-night event updates — Campus Connect keeps you in the loop, always. Real-time, reliable, and beautifully simple.</p>
+        <div class="feature-list">
+          <div class="feature-item"><div class="feature-dot"></div><span class="feature-text">Instant campus-wide notifications</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span class="feature-text">Smart event reminders & RSVP</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span class="feature-text">Official announcements from faculty</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span class="feature-text">Student community feed</span></div>
+          <div class="feature-item"><div class="feature-dot"></div><span class="feature-text">Works offline — syncs automatically</span></div>
+        </div>
+      </div>
+
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-status">
+            <span class="phone-time">9:41</span>
+            <div class="phone-icons">
+              <div class="phone-icon-dot"></div>
+              <div class="phone-icon-dot"></div>
+              <div class="phone-icon-dot"></div>
+            </div>
+          </div>
+          <div class="phone-card">
+            <div class="phone-greeting">Good morning,</div>
+            <div class="phone-greeting-name">User 👋</div>
+            <div class="phone-badge">● 3 new updates today</div>
+          </div>
+          <div class="phone-notif">
+            <div class="phone-notif-title">📢 Campus Announcement</div>
+            <div class="phone-notif-text">Library hours extended till 11 PM this week for semester exams.</div>
+          </div>
+          <div class="phone-event">
+            <div class="phone-event-tag">🎯 Upcoming Event</div>
+            <div class="phone-event-name">Tech Fest 2026 — Registration Open</div>
+            <div class="phone-event-time">Saturday, 21 June • 10:00 AM</div>
+          </div>
+          <div class="phone-notif" style="background:rgba(34,211,238,0.07);border-color:rgba(34,211,238,0.15);">
+            <div class="phone-notif-title" style="color:var(--cyan-300);">🏆 Community Highlight</div>
+            <div class="phone-notif-text">Final year project showcase submissions now open!</div>
+          </div>
+        </div>
+        <div class="phone-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <div style="padding: 0 24px;"><div class="section-divider"></div></div>
+
+  <!-- ─── WHY CAMPUS CONNECT ─── -->
+  <section class="why-section" id="why">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">Why Campus Connect</div>
+        <h2 class="section-headline">Built for the modern campus</h2>
+        <p class="section-body">Every feature is designed to reduce friction, increase engagement, and keep your entire campus community connected.</p>
+      </div>
+      <div class="cards-grid">
+        <div class="why-card reveal">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Faster Communication</div>
+          <div class="card-desc">Deliver messages campus-wide in seconds — no delays, no missed updates.</div>
+          <div class="card-check">Instant delivery</div>
+        </div>
+        <div class="why-card reveal">
+          <div class="card-icon">🔔</div>
+          <div class="card-title">Smart Notifications</div>
+          <div class="card-desc">Personalized alerts based on your courses, year, and interests.</div>
+          <div class="card-check">AI-powered filtering</div>
+        </div>
+        <div class="why-card reveal">
+          <div class="card-icon">📢</div>
+          <div class="card-title">Campus Announcements</div>
+          <div class="card-desc">Official notices from management and faculty — always verified, always clear.</div>
+          <div class="card-check">Verified sources only</div>
+        </div>
+        <div class="why-card reveal">
+          <div class="card-icon">🎉</div>
+          <div class="card-title">Event Updates</div>
+          <div class="card-desc">Never miss a fest, seminar, or sports event. RSVP and get reminders built-in.</div>
+          <div class="card-check">RSVP & reminders</div>
+        </div>
+        <div class="why-card reveal">
+          <div class="card-icon">🤝</div>
+          <div class="card-title">Student Community</div>
+          <div class="card-desc">A safe, moderated space for students to connect, collaborate, and grow together.</div>
+          <div class="card-check">Moderated & safe</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="padding: 0 24px;"><div class="section-divider"></div></div>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="how-section" id="how">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">Get Started in Minutes</div>
+        <h2 class="section-headline">Simple by design</h2>
+        <p class="section-body">Campus Connect is built so that anyone on campus — student, faculty, or admin — can be onboarded in under 3 minutes.</p>
+      </div>
+      <div class="steps-row reveal">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-title">Download the App</div>
+          <div class="step-desc">Available on Android and iOS. Free forever for students.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-title">Join Your Campus</div>
+          <div class="step-desc">Select your institution and verify with your college email.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-title">Stay Connected</div>
+          <div class="step-desc">Get personalized updates, join events, and connect with peers.</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:48px;" class="reveal">
+        <a href="#download" class="btn-primary" id="download">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Campus Connect
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div style="padding: 0 24px;"><div class="section-divider"></div></div>
+
+  <!-- ─── CONTACT ─── -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="contact-card reveal">
+        <div class="contact-icon">✉️</div>
+        <h2 class="contact-headline">Get in touch</h2>
+        <p class="contact-sub">Questions, partnerships, or want to bring Campus Connect to your institution? We'd love to hear from you.</p>
+        <a href="mailto:leadcircle.global@gmail.com" class="contact-email-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          leadcircle.global@gmail.com
+        </a>
+        <div class="contact-website">
+          Visit us at <a href="https://campusx.dev" target="_blank" rel="noopener">campusx.dev</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="#home" class="footer-logo">
+        <div class="logo-icon" style="width:36px;height:36px;font-size:15px;">CC</div>
+        <div class="footer-brand">Campus Connect</div>
+      </a>
+      <div>
+        <div class="footer-tagline">One Platform for Complete Campus Management</div>
+        <div class="footer-initiative" style="margin-top:6px;">An LeadCircle Initiative</div>
+      </div>
+      <a
+        href="https://www.instagram.com/campusconnect.in?igsh=MTd3MWp0dmd1MDF1Nw=="
+        target="_blank" rel="noopener noreferrer"
+        class="footer-insta"
+        aria-label="Follow Campus Connect on Instagram"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <div class="footer-copy">© 2026 Campus Connect. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+
+    // Navbar scroll effect
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+      navbar.style.background = window.scrollY > 60
+        ? 'rgba(2, 11, 24, 0.95)'
+        : 'rgba(2, 11, 24, 0.75)';
+    });
+  </script>
+</body>
+</html>
